@@ -5,8 +5,8 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-@token = ''
-@city = ARGV[0] 
+@token = ENV['OPENWEATHER_KEY']
+@city = 'Paris' 
 
 
 def get_weather()
@@ -31,9 +31,9 @@ def get_icon(weather_icon)
   Net::HTTP.get(uri)
 end
 
-
-
+=begin
 city_weather = get_weather
 puts "#{city_weather['name']}, #{city_weather['weather'][0]['description']}"
 puts "Min: #{city_weather['main']['temp_min']}°, Max: #{city_weather['main']['temp_max']}°"
 puts "Humidité: #{city_weather['main']['humidity']}%, Vent: #{((city_weather['wind']['speed'] / 1000) * 3600).round}Km/h"
+=end
