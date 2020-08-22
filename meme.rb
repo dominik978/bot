@@ -38,8 +38,7 @@ meme.message(content: '!time papeete') { |event|
 
 meme.message(content: '!weather paris') { |event|
   city_weather = get_weather('paris')
-  event.user.pm("#{city_weather['name']}, #{city_weather['weather'][0]['description']}\
-    \nMin: #{city_weather['main']['temp_min']}°, Max: #{city_weather['main']['temp_max']}°\
+  event.user.pm("#{city_weather['name']}, #{city_weather['main']['temp']}° #{city_weather['weather'][0]['description']}\
     \nHumidité: #{city_weather['main']['humidity']}%, Vent: #{((city_weather['wind']['speed'] / 1000) * 3600).round}Km/h")
   event.message.delete
 }
