@@ -11,5 +11,3 @@ def what_time(where)
     "Mémé doesn't know this city !"
   end
 end
-
-puts what_time('paris')

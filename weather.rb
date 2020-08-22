@@ -5,13 +5,11 @@ require 'net/http'
 require 'uri'
 require 'json'
 
-@token = ENV['OPENWEATHER_KEY']
-@city = 'Paris' 
+@token = ENV['OPENWEATHER_KEY'] 
 
-
-def get_weather()
+def get_weather(city)
   uri = URI('https://api.openweathermap.org/data/2.5/weather')
-  params = { q: @city, appid: @token, units: 'metric', lang: 'fr' }
+  params = { q: city, appid: @token, units: 'metric', lang: 'fr' }
   uri.query = URI.encode_www_form(params)
   response = Net::HTTP.get_response(uri)
 
@@ -30,10 +28,3 @@ def get_icon(weather_icon)
   uri = URI("https://openweathermap.org/img/wn/#{weather_icon}.png")
   Net::HTTP.get(uri)
 end
-
-=begin
-city_weather = get_weather
-puts "#{city_weather['name']}, #{city_weather['weather'][0]['description']}"
-puts "Min: #{city_weather['main']['temp_min']}°, Max: #{city_weather['main']['temp_max']}°"
-puts "Humidité: #{city_weather['main']['humidity']}%, Vent: #{((city_weather['wind']['speed'] / 1000) * 3600).round}Km/h"
-=end

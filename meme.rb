@@ -14,20 +14,14 @@ meme.message(content: '!man') { |event|
   event.user.pm("Comment Mémé fonctionne: \
     \n!man: affiche cette aide
     \n!hello: répond hello
-    \n!time [ville]: affiche l'heure local dans la ville spécifiée \
-    \n!weather [ville]: affiche la météo dans la ville spécifiée")
+    \n!time [ville]: affiche l'heure local dans la ville spécifiée (seulement Paris et Papeete) \
+    \n!weather [ville]: affiche la météo du moment dans la ville spécifiée (seulement Paris et Papeete)")
   event.message.delete
 }
 
 meme.message(content: '!hello' ) { |event|
   event.user.pm("Hello #{event.user.name} !")
   event.message.delete
-}
-
-meme.message(content: '!time') { |event|
-  event.user.pm("How !time command works !time: \
-    \nFor now you can only have the time for Paris and Papeete \
-    \nE.g: !time paris")
 }
 
 meme.message(content: '!time paris') { |event|
@@ -42,8 +36,16 @@ meme.message(content: '!time papeete') { |event|
   event.message.delete
 }
 
-meme.message(content: '!weather') { |event|
-  city_weather = get_weather
+meme.message(content: '!weather paris') { |event|
+  city_weather = get_weather('paris')
+  event.user.pm("#{city_weather['name']}, #{city_weather['weather'][0]['description']}\
+    \nMin: #{city_weather['main']['temp_min']}°, Max: #{city_weather['main']['temp_max']}°\
+    \nHumidité: #{city_weather['main']['humidity']}%, Vent: #{((city_weather['wind']['speed'] / 1000) * 3600).round}Km/h")
+  event.message.delete
+}
+
+meme.message(content: '!weather papeete') { |event|
+  city_weather = get_weather('papeete')
   event.user.pm("#{city_weather['name']}, #{city_weather['weather'][0]['description']}\
     \nMin: #{city_weather['main']['temp_min']}°, Max: #{city_weather['main']['temp_max']}°\
     \nHumidité: #{city_weather['main']['humidity']}%, Vent: #{((city_weather['wind']['speed'] / 1000) * 3600).round}Km/h")
