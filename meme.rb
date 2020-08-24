@@ -7,8 +7,8 @@ require './timezone.rb'
 
 token = ENV['DISCORD_TOKEN']
 
-# Instantiate the Mémé
-meme = Discordrb::Bot.new token: "#{token}"
+# Instantiate Mémé
+meme = Discordrb::Bot.new token: token
 
 meme.message(content: '!man') { |event|
   event.user.pm("Comment Mémé fonctionne: \
@@ -20,19 +20,16 @@ meme.message(content: '!man') { |event|
 }
 
 meme.message(content: '!hello' ) { |event|
+  why = event.content
+  event.user.pm("#{why}")
   event.user.pm("Hello #{event.user.name} !")
   event.message.delete
 }
 
-meme.message(content: '!time paris') { |event|
-  location_time = what_time('paris')
-  event.user.pm("Il est #{location_time} à Paris")
-  event.message.delete
-}
-
-meme.message(content: '!time papeete') { |event|
-  location_time = what_time('papeete')
-  event.user.pm("Il est #{location_time} à Papeete")
+meme.message(content: /!time\s[a-zA-Z]*/) { |event|
+  k, v = event.message.content.split(" ")
+  location_time = what_time(v)
+  event.user.pm(location_time)
   event.message.delete
 }
 
