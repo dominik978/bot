@@ -10,22 +10,26 @@ token = ENV['DISCORD_TOKEN']
 # Instantiate Mémé
 meme = Discordrb::Bot.new token: token
 
+# Display how bot works
 meme.message(content: '!man') { |event|
   event.user.pm("Comment Mémé fonctionne: \
     \n!man: affiche cette aide
-    \n!hello: répond hello
-    \n!time [ville]: affiche l'heure local dans la ville spécifiée (seulement Paris et Papeete) \
-    \n!weather [ville]: affiche la météo du moment dans la ville spécifiée (seulement Paris et Papeete)")
+    \n!hello ou !bonjour: dire bonjour au bot
+    \n!time [ville]: affiche l'heure local dans la ville spécifiée si elle est connue \
+    \n!weather [ville]: affiche la météo du moment dans la ville spécifiée si elle est connue (openweather)")
   event.message.delete
 }
 
-meme.message(content: '!hello' ) { |event|
-  why = event.content
-  event.user.pm("#{why}")
-  event.user.pm("Hello #{event.user.name} !")
+meme.message(content: /!hello|!bonjour/ ) { |event|
+  if event.message.content.include?('!hello')
+    event.user.pm("Hello #{event.user.name} !")
+  else
+    event.user.pm("Bonjour #{event.user.name} !")
+  end
   event.message.delete
 }
 
+# Respond to time when a city is specified. Cities are hard coded in timezone.rb
 meme.message(content: /!time\s[a-zA-Z]*/) { |event|
   k, v = event.message.content.split(" ")
   location_time = what_time(v)
@@ -33,17 +37,12 @@ meme.message(content: /!time\s[a-zA-Z]*/) { |event|
   event.message.delete
 }
 
-meme.message(content: '!weather paris') { |event|
-  city_weather = get_weather('paris')
-  event.user.pm("#{city_weather['name']}, #{city_weather['main']['temp']}° #{city_weather['weather'][0]['description']}\
-    \nHumidité: #{city_weather['main']['humidity']}%, Vent: #{((city_weather['wind']['speed'] / 1000) * 3600).round}Km/h")
-  event.message.delete
-}
-
-meme.message(content: '!weather papeete') { |event|
-  city_weather = get_weather('papeete')
-  event.user.pm("#{city_weather['name']}, #{city_weather['weather'][0]['description']}\
-    \nMin: #{city_weather['main']['temp_min']}°, Max: #{city_weather['main']['temp_max']}°\
+# Return the weather. I use openweather.org api
+# To do: improve regexp to handle city with hyphen and space. E.g: issy-les-moulineaux 
+meme.message(content: /!weather\s[a-zA-A]*/) { |event|
+  k, v = event.message.content.split(" ")
+  city_weather = get_weather(v)
+  event.user.pm("#{city_weather['name']}, #{city_weather['main']['temp'].round}° #{city_weather['weather'][0]['description']}\
     \nHumidité: #{city_weather['main']['humidity']}%, Vent: #{((city_weather['wind']['speed'] / 1000) * 3600).round}Km/h")
   event.message.delete
 }

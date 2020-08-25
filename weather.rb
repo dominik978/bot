@@ -42,6 +42,3 @@ def get_forcast(city)
     JSON.parse(response.body)
   end
 end
-
-r =  get_weather('paris')
-puts r['main']['temp']
