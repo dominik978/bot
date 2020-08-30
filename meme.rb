@@ -13,8 +13,8 @@ meme = Discordrb::Bot.new token: token
 # Display how bot works
 meme.message(content: '!man') { |event|
   event.user.pm("Comment Mémé fonctionne: \
-    \n!man: affiche cette aide
-    \n!hello ou !bonjour: dire bonjour au bot
+    \n!man: affiche cette aide \
+    \n!hello ou !bonjour: dire bonjour au bot \
     \n!time [ville]: affiche l'heure local dans la ville spécifiée si elle est connue \
     \n!weather [ville]: affiche la météo du moment dans la ville spécifiée si elle est connue (openweather)")
   event.message.delete
