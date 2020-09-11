@@ -43,7 +43,7 @@ meme.message(content: /!time\s[a-zA-Z]*/) { |event|
 meme.message(content: /!weather\s[a-zA-A]*/) { |event|
   k, v = event.message.content.split(" ")
   city_weather = get_weather(v)
-  event.user.pm("#{city_weather['name']}, #{city_weather['main']['temp'].round}° #{city_weather['weather'][0]['description']}\
+  event.user.pm("#{city_weather['name']}, #{city_weather['main']['temp'].round}° #{city_weather['weather'][0]['description']} \
     \nHumidité: #{city_weather['main']['humidity']}%, Vent: #{((city_weather['wind']['speed'] / 1000) * 3600).round}Km/h")
   event.message.delete
 }
