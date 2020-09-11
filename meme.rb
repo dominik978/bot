@@ -31,8 +31,8 @@ meme.message(content: /!hello|!bonjour/ ) { |event|
 }
 
 # Respond to time when a city is specified. Cities are hard coded in timezone.rb
-meme.message(content: /!time\s[a-zA-Z]+(?:\s|\-[a-zA-Z]+)*/) { |event|
-  # To do: change how city are splited. Currently new york doesn't work because there are several spaces
+meme.message(content: /!time\s[a-zA-Z]+(?:\-[a-zA-Z]+)*/) { |event|
+  # To do: change how city are splited. Currently new york doesn't work because there are several spaces.
   k, v = event.message.content.split(" ")
   location_time = what_time(v)
   event.user.pm(location_time)
@@ -40,11 +40,17 @@ meme.message(content: /!time\s[a-zA-Z]+(?:\s|\-[a-zA-Z]+)*/) { |event|
 }
 
 # Return the weather. I use openweather.org api 
-meme.message(content: /!weather\s[a-zA-A]+(?:\s|\-[a-zA-Z]+)*/) { |event|
+meme.message(content: /!weather\s[a-zA-A]+(?:\-[a-zA-Z]+)*/) { |event|
+  # To do: same as time with several spaces.
   k, v = event.message.content.split(" ")
   city_weather = get_weather(v)
+
+  if city_weather['cod'] != '200'
+    event.user.pm("#{city_weather['message']}")
+  else
   event.user.pm("#{city_weather['name']}, #{city_weather['main']['temp'].round}° #{city_weather['weather'][0]['description']} \
     \nHumidité: #{city_weather['main']['humidity']}%, Vent: #{((city_weather['wind']['speed'] / 1000) * 3600).round}Km/h")
+  end
   event.message.delete
 }
 
