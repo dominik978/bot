@@ -45,7 +45,7 @@ meme.message(content: /!weather\s[a-zA-A]+(?:\-[a-zA-Z]+)*/) { |event|
   k, v = event.message.content.split(" ")
   city_weather = get_weather(v)
 
-  if city_weather['cod'] != '200'
+  if city_weather['cod'].to_i != 200
     event.user.pm("#{city_weather['message']}")
   else
   event.user.pm("#{city_weather['name']}, #{city_weather['main']['temp'].round}° #{city_weather['weather'][0]['description']} \
