@@ -31,16 +31,16 @@ meme.message(content: /!hello|!bonjour/ ) { |event|
 }
 
 # Respond to time when a city is specified. Cities are hard coded in timezone.rb
-meme.message(content: /!time\s[a-zA-Z]*/) { |event|
+meme.message(content: /!time\s[a-zA-Z]+(?:\s|\-[a-zA-Z]+)*/) { |event|
+  # To do: change how city are splited. Currently new york doesn't work because there are several spaces
   k, v = event.message.content.split(" ")
   location_time = what_time(v)
   event.user.pm(location_time)
   event.message.delete
 }
 
-# Return the weather. I use openweather.org api
-# To do: improve regexp to handle city with hyphen and space. E.g: issy-les-moulineaux 
-meme.message(content: /!weather\s[a-zA-A]*/) { |event|
+# Return the weather. I use openweather.org api 
+meme.message(content: /!weather\s[a-zA-A]+(?:\s|\-[a-zA-Z]+)*/) { |event|
   k, v = event.message.content.split(" ")
   city_weather = get_weather(v)
   event.user.pm("#{city_weather['name']}, #{city_weather['main']['temp'].round}° #{city_weather['weather'][0]['description']} \

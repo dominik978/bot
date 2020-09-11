@@ -12,7 +12,7 @@ def what_time(where)
   when 'londres'
     t = Time.now.utc.localtime("+01:00").strftime("%H:%M")
     "il est #{t} à Londres"
-  when 'new-york'
+  when 'new-york', 'new york'
     t = Time.now.utc.localtime("-04:00").strftime("%H:%M")
     "il est #{t} à New York"
   when 'tokyo'
