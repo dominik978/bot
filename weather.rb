@@ -24,13 +24,5 @@ def get_forcast(city)
   uri.query = URI.encode_www_form(params)
   response = Net::HTTP.get_response(uri)
 
-  if response.code == 401
-    puts "Something goes wrong with your API key"
-  elsif response.code == 404
-    puts "You made a wrong request, perhaps your City is not available"
-  elsif response.code == 409
-    puts "You have reached your API calls limit"
-  else
-    JSON.parse(response.body)
-  end
+  JSON.parse(response.body)
 end
