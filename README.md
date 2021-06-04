@@ -1,2 +1,2 @@
 # bot
-Trying to write a simple bot for Discord in ruby
+A simple bot for Discord in ruby
